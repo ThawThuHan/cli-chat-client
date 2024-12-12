@@ -11,6 +11,9 @@ A lightweight command-line chat client written in Go. This project provides a si
 - Written in Go, ensuring high performance and portability.
 
 ## How to run
+before you run cli-chat, you have to setup the server first.
+Click the following link to see How to setup cli-chat-server.
+[Cli-Chat-Server](https://github.com/ThawThuHan/cli-chat-server)
 ### Build Binary file
 #### Prerequisites
 before install or build this project you need to download following package
