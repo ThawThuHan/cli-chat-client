@@ -75,6 +75,7 @@ func main() {
 		})
 
 	textView.SetTitle(" CLi-Chat ").SetBorder(true).SetTitleAlign(tview.AlignCenter)
+	textView.SetScrollable(true).ScrollToEnd()
 
 	// Create an input field for user input
 	inputField := tview.NewInputField().
@@ -88,30 +89,55 @@ func main() {
 		if key == tcell.KeyEnter {
 			// Get the user's input
 			userInput := inputField.GetText()
-			// Append the user's input to the output view
-			fmt.Fprintf(textView, "[green]you: %s", userInput+"\n")
-			// Clear the input field
-			inputField.SetText("")
-			data := fmt.Sprintf("%s: %s", username, userInput)
-			_, writeErr := conn.Write([]byte(data))
-			if writeErr != nil {
-				log.Println("Error writing to server:", writeErr)
-				os.Exit(1)
+			switch userInput {
+			case "/exit", "/Exit", "/EXIT":
+				sendMessage(conn, "has left the chat", username)
+				app.Stop()
+			case "/clear", "/Clear", "/CLEAR":
+				textView.Clear()
+				inputField.SetText("")
+			default:
+				// Append the user's input to the output view
+				fmt.Fprintf(textView, "[green]you: %s", userInput+"\n")
+				// Clear the input field
+				inputField.SetText("")
+				data := fmt.Sprintf("%s: %s", username, userInput)
+				_, writeErr := conn.Write([]byte(data))
+				if writeErr != nil {
+					log.Println("Error writing to server:", writeErr)
+					os.Exit(1)
+				}
 			}
 		}
 	})
 
+	inputField.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		row, col := textView.GetScrollOffset()
+		switch event.Key() {
+		case tcell.KeyEscape:
+			app.Stop()
+		case tcell.KeyUp:
+			textView.ScrollTo(row-1, col)
+		case tcell.KeyDown:
+			textView.ScrollTo(row+1, col)
+		}
+		return event
+	})
+
 	copyright := tview.NewTextView()
-
 	copyright.Write([]byte("Developer: github.com/ThawThuHan\n"))
-
 	copyright.SetTextAlign(tview.AlignCenter)
+
+	helpTextArea := tview.NewTextView()
+	helpTextArea.Write([]byte("Commands: /exit - to exit from the chat, /clear - to clear all messages"))
+	helpTextArea.SetTextAlign(tview.AlignCenter)
 
 	// Layout combining the output view and input field
 	layout := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(textView, 0, 1, false).
 		AddItem(inputField, 3, 1, true).
+		AddItem(helpTextArea, 1, 0, false).
 		AddItem(copyright, 1, 0, false)
 
 	// Set the layout as the root and run the application
