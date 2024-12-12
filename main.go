@@ -12,6 +12,10 @@ import (
 )
 
 func connectToServer() net.Conn {
+	if len(os.Args) != 3 {
+		fmt.Println("Usage: cli-chat-client <server> <port>")
+		os.Exit(1)
+	}
 	server := os.Args[1]
 	port := os.Args[2]
 
