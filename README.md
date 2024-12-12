@@ -2,6 +2,8 @@
 
 A lightweight command-line chat client written in Go. This project provides a simple and efficient way to communicate in real-time via a terminal-based interface.
 
+![cli-chat-app](https://github.com/user-attachments/assets/2daef8bd-df4d-4e8f-8068-6c3f6fff3631)
+
 ## Features
 - Real-time chat functionality.
 - Lightweight and fast.
