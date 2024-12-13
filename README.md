@@ -37,3 +37,14 @@ OR
 curl -o cli-chat.exe https://github.com/ThawThuHan/cli-chat-client/releases/download/v1.0/cli-chat.exe
 ./cli-chat.exe <server-ip> <server-port>
 ```
+
+#### Linux
+Download pre-build binary file [Cli-Chat-Linux](https://github.com/ThawThuHan/cli-chat-client/releases/download/v1.0/cli-chat-linux) from release and run
+```sh
+./cli-chat-linux <server-ip> <server-port>
+```
+OR
+```sh
+curl -o cli-chat https://github.com/ThawThuHan/cli-chat-client/releases/download/v1.0/cli-chat.exe
+./cli-chat <server-ip> <server-port>
+```
